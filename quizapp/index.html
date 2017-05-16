@@ -2,42 +2,68 @@
 <html lang="en">
 <head>
     <title>Quiz App Project</title>
+    <meta name="description" content="A very 3cute5me quiz on the 7000-series Metro trains and related facts">
+    <!-- Google Font since Helvetica Neue isn't free 3sadbunbun5me -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet"> 
+    <!-- Grid CSS Layout -->
+    <link rel="stylesheet" href="grid.css">
+    <!-- CSS for the rest of the 3cute5me quiz -->
     <link rel="stylesheet" href="main.css">
 </head>
-<body>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="app.js"></script>
-    <div class="start-quiz-page">
-        <h1>WELCOME TO OUR QUIZ</h1>
-        <p>The 7000-series train on WMATA's Metrorail system is the newest of their series with new features, enhancements, and overall 3gloriousperfection5me. Take this quiz to see how much you know about the 7000-series and the Metro!</p>
-        <button type="submit" id="start-quiz">START QUIZ</button>
-    </div>
-    <div class="standard-quiz-page">
-        <header>
-            <h2>QUESTION <span class="current-question"></span> / 10</h2>
-            <h2><span class="correct-question"></span> / 10</h2>
-        </header>
-        <div class="questions"></div>
-        <div class="answers">
-            <button type="button" class="answer" id="1"></button>
-            <button type="button" class="answer" id="2"></button>
-            <button type="button" class="answer" id="3"></button>
-            <button type="button" class="answer" id="4"></button>
+<header>
+    <div class="row">
+        <div class="col-12">
+            <div class="image">
+                <img src="images/3CUTE5ME7000SERIES.jpg" alt="Photo of 7000-series train at Metro Center Station by Avi">
+                <h1>7000-SERIES QUIZ</h1>
+                <h2>BY AVI AND WILLIAM</h2>
+            </div>
         </div>
-        <button type="submit" class="" id="next">NEXT</button>
-        <button type="submit" class="hidden" id="finish">FINISH</button>
-        <div class="correctAnswer hidden"><h2>CORRECT!</h2></div>
-        <div class="incorrectAnswer hidden"><h2>Oops! The correct answer was: <span class="provideAnswer"></span></h2></div>
     </div>
-    <div class="end-quiz-page">
-        <h1>THE END!</h1>
-        <h2>Your score was <span class="finalScore"></span>%</h2>
-        <div class="custom-message"></div>
-        <button type="submit" id="restart-option">TRY AGAIN?</button>
-        <button type="submit" id="details-option">DETAILS</button>
-        <div class="detailedOptionsList hidden">
-            <h2>DETAILS</h2>
-            <div class="detailsContainer">
+</header>
+<body>
+    <div class= "row">
+        <div class="col-12">
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+            <script src="app.js"></script>
+            <div class="start-quiz-page">
+                <h1>WELCOME TO OUR QUIZ</h1>
+                <p>The 7000-series train on WMATA's Metrorail system is the newest of their series with new features, enhancements, and overall 3gloriousperfection5me. Take this quiz to see how much you know about the 7000-series and the Metro!</p>
+                <button type="submit" id="start-quiz">START QUIZ</button>
+            </div>
+            <div class="standard-quiz-page">
+                <header>
+                    <div class="col-6 questionLeft">
+                        <h2>QUESTION <span class="current-question"></span> / 10</h2>
+                    </div>
+                    <div class="col-6 scoreRight">
+                        <h2>SCORE: <span class="correct-question"></span> / 10</h2>
+                    </div>
+                </header>
+                <div class="questions"></div>
+                <div class="answers">
+                    <button type="button" class="answer button1" id="1"></button>
+                    <button type="button" class="answer button2" id="2"></button>
+                    <button type="button" class="answer button3" id="3"></button>
+                    <button type="button" class="answer button4" id="4"></button>
+                </div>
+                <button type="submit" class="" id="next">NEXT</button>
+                <button type="submit" class="hidden" id="finish">FINISH</button>
+                <div class="stopAndAnswerPlease hidden">Please stop to finish answering this question!</div>
+                <div class="responseToAnswer correctAnswer hidden"><h2>CORRECT!</h2></div>
+                <div class="responseToAnswer incorrectAnswer hidden"><h2>Oops! The correct answer was: <span class="provideAnswer"></span></h2></div>
+            </div>
+            <div class="end-quiz-page">
+                <h1>THE END!</h1>
+                <h2>Your score was <span class="finalScore"></span>%</h2>
+                <div class="custom-message"></div>
+                <button type="submit" id="restart-option">TRY AGAIN?</button>
+                <button type="submit" id="details-option">DETAILS</button>
+                <div class="detailedOptionsList hidden">
+                    <h2>DETAILS</h2>
+                    <div class="detailsContainer">
+                    </div>
+                </div>
             </div>
         </div>
     </div>

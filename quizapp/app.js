@@ -79,14 +79,10 @@ const appState={
     ],
     currentQuestion: null,
     correct: null, // Tri-state logic used: true/false if question is answered, null if asked
-    // Questions with answers
-    // User's answer choice
     answerChoice: [],
-    // Has quiz started?
-    // What is the current question?
-    // Other things like score, anything else?
     correctAnswers: 0,
-    showDetails: false // If select true will open up details
+    showDetails: false, // If select true will open up details
+    pleaseAnswerThankYou: false // Stops the user from continuing on if they try to only click next to skip a question
 };
 const question1 = appState.questions[0];
 question1.answers[question1.answers.correctAnswer];
@@ -104,6 +100,7 @@ function startQuiz(state){
     state.correctAnswers = 0;
     state.answerChoice = [];
     state.correct = null;
+    state.showDetails = false;
 }
 function selectAnswer(state, targetID){
     let userInput = targetID;
@@ -123,11 +120,12 @@ function selectAnswer(state, targetID){
 }
 function nextQuestionButton(state){
     if(state.answerChoice.length - 1 !== state.currentQuestion){
-        alert('Please select an answer!');
+        state.pleaseAnswerThankYou=true;
     }
     else{
         state.currentQuestion  += 1;
         state.correct = null;
+        state.pleaseAnswerThankYou=false;
     }
 }
 function finishQuizButton(state){
@@ -192,6 +190,13 @@ function render(state){
             $('#finish').addClass('hidden');
             $('#next').removeClass('hidden');
         }
+        //$('.stopAndAnswerPlease').addClass('hidden');
+        if(state.pleaseAnswerThankYou===true){
+            $('.stopAndAnswerPlease').removeClass('hidden');
+        }
+        else if(state.pleaseAnswerThankYou===false){
+            $('.stopAndAnswerPlease').addClass('hidden');
+        }
     }
     else if (state.currentQuestion < 0){
         //render the end page
@@ -199,18 +204,29 @@ function render(state){
         $('.standard-quiz-page').addClass('hidden');
         $('.start-quiz-page').addClass('hidden');
         $('.finalScore').html(`${state.correctAnswers*10}`);
+        let detailsHTML = ``
         if(state.showDetails===true){
-            for(let i=0;i<=state.questions.length;i++){
-                //let allQuestions+=1
-            }
+            $('.detailedOptionsList').removeClass('hidden');
+            let i = 0;
+            state.questions.forEach(obj => {
+                let answerFeedback = '';
+                if (obj.answers[obj.correctAnswer-1] === obj.answers[state.answerChoice[i]-1]){
+                    answerFeedback = 'CORRECT';
+                }
+                else if (obj.answers[obj.correctAnswer-1] !== obj.answers[state.answerChoice[i]-1]){
+                    answerFeedback = 'INCORRECT';
+                }
+                detailsHTML += `<div class="detailedOptionsBox">
+                <h3>QUESTION ${i + 1} / 10</h3>
+                <div class="detailsQuestion">${obj.text}</div>
+                <div class="detailsCorrectAnswer">Correct Answer: ${obj.answers[obj.correctAnswer-1]}</div>
+                <div class="detailsYourAnswer">Your Answer: ${obj.answers[state.answerChoice[i]-1]}</div>
+                <h3>YOUR ANSWER WAS: <span class="answerFeedback">${answerFeedback}</span></h3>
+                </div>`;
+                i++;
+            });
+        $('.detailedOptionsList').html(detailsHTML);
         }
-        // let detailsHTML = `<div class="detailedOptionsBox">
-        //         <h3>QUESTION ${state.currentQuestion+1} / 10</h3>
-        //         <div class="detailsQuestion">${}</div>
-        //         <div class="detailsCorrectAnswer">${}</div>
-        //         <div class="detailsYourAnswer">${}</div>
-        //         <h3>YOUR ANSWER WAS: <span class="answerFeedback"></span></h3>
-        //     </div>`;
     }
 
 }
@@ -247,6 +263,7 @@ function eventHandlers(){
     });
     // Open up details
     $('#details-option').click(function(event){
+        console.log($(this));
         openUpDetails(appState);
         render(appState);
     });
