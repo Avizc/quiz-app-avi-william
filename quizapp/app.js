@@ -85,7 +85,8 @@ const appState={
     // Has quiz started?
     // What is the current question?
     // Other things like score, anything else?
-    correctAnswers: 0
+    correctAnswers: 0,
+    showDetails: false // If select true will open up details
 };
 const question1 = appState.questions[0];
 question1.answers[question1.answers.correctAnswer];
@@ -100,6 +101,9 @@ question1.answers[question1.answers.correctAnswer];
 //STATE MODS
 function startQuiz(state){
     state.currentQuestion = 0;
+    state.correctAnswers = 0;
+    state.answerChoice = [];
+    state.correct = null;
 }
 function selectAnswer(state, targetID){
     let userInput = targetID;
@@ -118,12 +122,22 @@ function selectAnswer(state, targetID){
 
 }
 function nextQuestionButton(state){
-    state.currentQuestion  += 1;
-    state.correct = null;
+    if(state.answerChoice.length - 1 !== state.currentQuestion){
+        alert('Please select an answer!');
+    }
+    else{
+        state.currentQuestion  += 1;
+        state.correct = null;
+    }
 }
 function finishQuizButton(state){
     state.currentQuestion = -1;
 }
+function openUpDetails(state){
+    state.showDetails = true;
+}
+
+//
 
 ///RENDER
 function render(state){
@@ -136,6 +150,7 @@ function render(state){
         // render the main quiz page
         $('.standard-quiz-page').removeClass('hidden');
         $('.start-quiz-page').addClass('hidden');
+        $('.end-quiz-page').addClass('hidden');
     
         //render top info
         $('.current-question').html(`${state.currentQuestion + 1}`);
@@ -145,12 +160,20 @@ function render(state){
         $('.questions').html(`${state.questions[state.currentQuestion].text}`);
 
         //render answer choices
-        $('#1').html(`${state.questions[state.currentQuestion].answers[0]}`);
-        $('#2').html(`${state.questions[state.currentQuestion].answers[1]}`);
-        $('#3').html(`${state.questions[state.currentQuestion].answers[2]}`);
-        $('#4').html(`${state.questions[state.currentQuestion].answers[3]}`);
+        // $('#1').html(`${state.questions[state.currentQuestion].answers[0]}`);
+        // $('#2').html(`${state.questions[state.currentQuestion].answers[1]}`);
+        // $('#3').html(`${state.questions[state.currentQuestion].answers[2]}`);
+        // $('#4').html(`${state.questions[state.currentQuestion].answers[3]}`);
+
+        for(let i = 0; i < 4; i++){
+            $(`#${i+1}`).html(`${state.questions[state.currentQuestion].answers[i]}`);
+        }
+
         //render Correct / incorrect divs
         // Sets hidden classes
+
+        //maybe instead of hidden classes, use .hide / .show
+
         $('.incorrectAnswer , .correctAnswer').addClass('hidden');
         if(state.correct===true){
             //render the "correct" div
@@ -159,10 +182,15 @@ function render(state){
         else if (state.correct===false){
             //render "incoreect div"
             $('.incorrectAnswer').removeClass('hidden');
+            $('.provideAnswer').html(`${state.questions[state.currentQuestion].answers[state.questions[state.currentQuestion].correctAnswer-1]}`);
         }
-        if(state.currentQuestion >= (state.questions.length -1)){
+        if(state.currentQuestion >= state.questions.length -1){
             $('#finish').removeClass('hidden');
             $('#next').addClass('hidden');
+        }
+        else if(state.currentQuestion < state.questions.length -1){
+            $('#finish').addClass('hidden');
+            $('#next').removeClass('hidden');
         }
     }
     else if (state.currentQuestion < 0){
@@ -170,7 +198,21 @@ function render(state){
         $('.end-quiz-page').removeClass('hidden');
         $('.standard-quiz-page').addClass('hidden');
         $('.start-quiz-page').addClass('hidden');
+        $('.finalScore').html(`${state.correctAnswers*10}`);
+        if(state.showDetails===true){
+            for(let i=0;i<=state.questions.length;i++){
+                //let allQuestions+=1
+            }
+        }
+        // let detailsHTML = `<div class="detailedOptionsBox">
+        //         <h3>QUESTION ${state.currentQuestion+1} / 10</h3>
+        //         <div class="detailsQuestion">${}</div>
+        //         <div class="detailsCorrectAnswer">${}</div>
+        //         <div class="detailsYourAnswer">${}</div>
+        //         <h3>YOUR ANSWER WAS: <span class="answerFeedback"></span></h3>
+        //     </div>`;
     }
+
 }
 // Event handlers
 function eventHandlers(){
@@ -190,6 +232,22 @@ function eventHandlers(){
     // Move on to next question
     $('#next').click(function(event){
         nextQuestionButton(appState);
+        render(appState);
+    });
+    //Finish Quiz
+    $('#finish').click(function(event){
+        finishQuizButton(appState);
+        render(appState);
+    });
+    // Restart Quiz
+    $('#restart-option').click(function(event){
+        console.log('biong!')
+        startQuiz(appState);
+        render(appState);
+    });
+    // Open up details
+    $('#details-option').click(function(event){
+        openUpDetails(appState);
         render(appState);
     });
 }
