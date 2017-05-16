@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Quiz App Project</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="app.js"></script>
+    <div class="start-quiz-page">
+        <h1>WELCOME TO OUR QUIZ</h1>
+        <p>AVI WILL FILL OUT AWESOME 3CUTE5ME METRO STUFF HERE FILLER FILLER FILLER</p>
+        <button type="submit" id="start-quiz">START QUIZ</button>
+    </div>
+    <div class="standard-quiz-page">
+        <header>
+            <h2>QUESTION <span class="current-question"></span> / 10</h2>
+            <h2><span class="correct-question"></span> / 10</h2>
+        </header>
+        <div class="questions"></div>
+        <div class="answers">
+            <button type="button" class="answer" id="1"></button>
+            <button type="button" class="answer" id="2"></button>
+            <button type="button" class="answer" id="3"></button>
+            <button type="button" class="answer" id="4"></button>
+        </div>
+        <button type="submit" class="" id="next">NEXT</button>
+        <button type="submit" class="hidden" id="finish">FINISH</button>
+        <div class="correctAnswer hidden"><h2>CORRECT!</h2></div>
+        <div class="incorrectAnswer hidden"><h2>Oops! The correct answer was: <span class="provideAnswer"></span></h2></div>
+    </div>
+    <div class="end-quiz-page">
+        <h1>THE END!</h1>
+        <h2>Your score was %</h2>
+        <div class="custom-message">
+        </div>
+        <button type="submit" id="restart-option">TRY AGAIN?</button>
+    </div>
+</body>
+</html>
