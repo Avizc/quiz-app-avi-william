@@ -82,7 +82,8 @@ const appState={
     answerChoice: [],
     correctAnswers: 0,
     showDetails: false, // If select true will open up details
-    pleaseAnswerThankYou: false // Stops the user from continuing on if they try to only click next to skip a question
+    pleaseAnswerThankYou: false, // Stops the user from continuing on if they try to only click next to skip a question
+    onlyOneAnswerPlease: false // Stops user from selecting more than one answer
 };
 const question1 = appState.questions[0];
 question1.answers[question1.answers.correctAnswer];
@@ -103,6 +104,7 @@ function startQuiz(state){
     state.showDetails = false;
 }
 function selectAnswer(state, targetID){
+    if (state.correct !== null) return nextQuestionButton(state);
     let userInput = targetID;
     state.answerChoice.push(targetID);
     if(targetID == state.questions[state.currentQuestion].correctAnswer){
@@ -112,6 +114,12 @@ function selectAnswer(state, targetID){
     else{
         state.correct = false;
     }
+    // if(targetID > ){ // PICK UP FROM HERE OOPS
+    //     state.onlyOneAnswerPlease=true;
+    // }
+    // else{
+    //     state.onlyOneAnswerPlease=false;
+    // }
     let score = (`${state.correctAnswers} / ${state.questions.length}`);
     console.log(userInput);
     console.log(state.questions[state.currentQuestion].correctAnswer);
@@ -190,12 +198,20 @@ function render(state){
             $('#finish').addClass('hidden');
             $('#next').removeClass('hidden');
         }
+        // Don't let user skip on to the next question
         //$('.stopAndAnswerPlease').addClass('hidden');
         if(state.pleaseAnswerThankYou===true){
             $('.stopAndAnswerPlease').removeClass('hidden');
         }
         else if(state.pleaseAnswerThankYou===false){
             $('.stopAndAnswerPlease').addClass('hidden');
+        }
+        // Don't let the user select more than a single answer
+        if(state.onlyOneAnswerPlease===true){
+            ('.pleaseSelectASingleAnswer').removeClass('hidden');
+        }
+        else if(state.onlyOneAnswerPlease===false){
+            $('.pleaseSelectASingleAnswer').addClass('hidden');
         }
     }
     else if (state.currentQuestion < 0){
